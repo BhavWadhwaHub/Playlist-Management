@@ -1,452 +1,411 @@
-# Emergency Reporting Service
+# Playlist Management System
 
-A web-based emergency incident reporting platform that allows users to submit emergency reports through an interactive map interface.
+A Python-based music playlist management application that allows users to create, manage, organize, and interact with playlists and songs through object-oriented programming concepts.
 
-The application enables users to:
-
-* Report emergencies in real time
-* Pin incidents directly onto a map
-* Upload supporting images
-* Store incident information locally
-* View active emergency reports
-* Mark emergencies as resolved through admin authentication
-
-This project combines mapping technology, geolocation, local storage, and emergency management features into a simple and interactive reporting system.
+This project demonstrates the implementation of custom data structures, playlist operations, song management, and file handling while simulating the core functionality of a music streaming platform.
 
 ---
 
 # Project Overview
 
-The Emergency Reporting Service is designed to simulate a lightweight emergency management and incident tracking system.
+The Playlist Management System is designed to provide users with a simplified music management experience.
 
 Users can:
 
-1. Enter emergency details
-2. Provide a location or coordinates
-3. Upload evidence images
-4. Submit the report
-5. View incidents displayed on a live interactive map
+* Create playlists
+* Add songs to playlists
+* Remove songs
+* Search for songs
+* Display playlist contents
+* Organize music collections
+* Manage playlist metadata
 
-Administrators can:
+The system emphasizes:
 
-* Authenticate using a password
-* Mark incidents as resolved
-* Manage displayed reports
-
-The system uses:
-
-* Leaflet.js for interactive maps
-* OpenStreetMap for map tiles
-* LocalStorage for client-side data persistence
-* JavaScript for dynamic report management
+* Object-oriented design
+* Data organization
+* Playlist manipulation
+* User interaction workflows
+* Music library management
 
 ---
 
 # Features
 
-## Emergency Reporting
+## Playlist Management
 
-* Submit emergency incidents
-* Add emergency type and details
-* Include optional comments
-* Upload incident images
+* Create new playlists
+* Rename playlists
+* Delete playlists
+* Display playlist information
 
-## Interactive Map
+## Song Management
 
-* Real-time marker placement
-* OpenStreetMap integration
-* Location search and geocoding
-* Automatic coordinate conversion
+* Add songs to playlists
+* Remove songs from playlists
+* Search for songs
+* View song details
+* Prevent duplicate handling
 
-## Incident Management
+## Data Organization
 
-* Incident status tracking
-* Open/Resolved report states
-* Dynamic report table updates
-* Marker synchronization with reports
+* Store songs efficiently
+* Maintain playlist order
+* Dynamic playlist updates
+* Structured data representation
 
-## Authentication
+## User Interaction
 
-* Session-based login protection
-* Admin password verification
-* Restricted incident resolution access
+* Console-based interaction
+* Menu-driven navigation
+* Input validation
+* Interactive operations
 
-## Local Data Persistence
+## File Handling
 
-* Reports saved in browser localStorage
-* Data retained after page refresh
-* Persistent incident records
+* Save playlist information
+* Load existing playlist data
+* Persistent music management
 
 ---
 
 # Technologies Used
 
-## Frontend
+## Programming Language
 
-* HTML5
-* CSS3
-* JavaScript (Vanilla JS)
+* Python 3
 
-## Libraries and APIs
+## Concepts and Techniques
 
-* Leaflet.js
-* OpenStreetMap
-* Leaflet Control Geocoder
-* CryptoJS
-* XLSX.js
+* Object-Oriented Programming (OOP)
+* Classes and Objects
+* Lists and Collections
+* File I/O Operations
+* Exception Handling
+* Modular Programming
 
 ---
 
 # Project Structure
 
 ```text
-Emergency-Reporting-Service-main/
+Playlist-Management-main/
 │
-├── index.html          # Main emergency reporting interface
-├── login.html          # Login/authentication page
-├── script.js           # Core application logic
-├── style.css           # Styling and UI layout
+├── main.py             # Main program execution file
+├── playlist.py         # Playlist management logic
+├── song.py             # Song class and related operations
+├── utils.py            # Utility/helper functions
+├── data/               # Playlist or song storage files
 ├── README.md           # Project documentation
-└── WhatsApp Image...   # Supporting image asset
+└── assets/             # Optional supporting resources
 ```
 
 ---
 
-# System Workflow
+# System Architecture
 
-# 1. User Authentication
+The project follows a modular object-oriented design.
 
-When users open the application:
+Core components include:
 
-```javascript
-if (sessionStorage.getItem('authenticated') !== 'true') {
-    window.location.href = 'login.html';
-}
-```
-
-The system checks whether the user is authenticated.
-
-If not authenticated:
-
-* The user is redirected to the login page.
-
-Authentication state is stored using:
-
-```javascript
-sessionStorage
-```
+| Component         | Responsibility                  |
+| ----------------- | ------------------------------- |
+| Song Class        | Represents individual songs     |
+| Playlist Class    | Manages playlist operations     |
+| Main Program      | Handles user interaction        |
+| Utility Functions | Supports validation and helpers |
 
 ---
 
-# 2. Interactive Map Initialization
+# How the System Works
 
-The application initializes a Leaflet map:
+# 1. Song Representation
 
-```javascript
-const map = L.map("map").setView([49.276765, -122.917957], 12);
+Each song is represented using a Song class.
+
+Typical attributes include:
+
+```python
+class Song:
+    def __init__(self, title, artist, duration):
+        self.title = title
+        self.artist = artist
+        self.duration = duration
 ```
 
-Features include:
+A song object stores:
 
-* Zoom controls
-* Map dragging
-* Incident markers
-* Geolocation search
-
-The map uses OpenStreetMap tiles:
-
-```javascript
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
-```
+* Song title
+* Artist name
+* Duration
+* Metadata
 
 ---
 
-# 3. Emergency Submission Form
+# 2. Playlist Creation
 
-Users can submit:
-
-| Field          | Description              |
-| -------------- | ------------------------ |
-| Name           | Reporter name            |
-| Phone          | Contact number           |
-| Emergency Type | Type of incident         |
-| Location       | Address or location name |
-| Longitude      | Optional coordinate      |
-| Latitude       | Optional coordinate      |
-| Image          | Optional uploaded image  |
-| Comments       | Additional details       |
-
-Required fields:
-
-* Name
-* Phone
-* Emergency Type
-* Location
-
-Validation is performed before submission.
-
----
-
-# 4. Geolocation and Coordinate Handling
-
-The system supports two location methods.
-
-## Method 1: Manual Coordinates
-
-Users can directly enter:
-
-* Latitude
-* Longitude
+Users can create playlists dynamically.
 
 Example:
 
+```python
+playlist = Playlist("Favorites")
+```
+
+Each playlist maintains:
+
+* Playlist name
+* Collection of songs
+* Playlist statistics
+
+---
+
+# 3. Adding Songs
+
+Songs can be added into playlists.
+
+Example:
+
+```python
+playlist.add_song(song)
+```
+
+The system:
+
+* Appends songs
+* Updates playlist contents
+* Validates song entries
+
+---
+
+# 4. Removing Songs
+
+Users can remove songs from playlists.
+
+Example:
+
+```python
+playlist.remove_song(song_name)
+```
+
+The application searches the playlist and removes matching songs.
+
+---
+
+# 5. Displaying Playlists
+
+The system can display all songs in a playlist.
+
+Example Output:
+
 ```text
-Latitude: 49.2827
-Longitude: -123.1207
+Playlist: Favorites
+-------------------
+1. Blinding Lights - The Weeknd
+2. Shape of You - Ed Sheeran
+3. Stay - Justin Bieber
 ```
 
 ---
 
-## Method 2: Address Geocoding
+# 6. Song Searching
 
-If coordinates are not provided:
+Users can search for songs by:
 
-```javascript
-geocoder.geocode(location, callback)
-```
+* Title
+* Artist
+* Keyword
 
-The system converts the address into coordinates automatically using:
+Example:
 
-* Leaflet Control Geocoder
-* OpenStreetMap Nominatim API
-
----
-
-# 5. Report Creation
-
-Once validated:
-
-```javascript
-saveAndRenderReport(report)
-```
-
-The report object contains:
-
-```javascript
-{
-  lat,
-  lng,
-  name,
-  phone,
-  image,
-  emergency,
-  location,
-  comments,
-  time,
-  status
-}
-```
-
-Default status:
-
-```text
-OPEN
+```python
+playlist.search_song("Stay")
 ```
 
 ---
 
-# 6. Local Storage Persistence
+# 7. File Persistence
 
-Reports are stored locally in the browser:
+Playlist data can be stored using file operations.
 
-```javascript
-localStorage.setItem("emergencyReports", JSON.stringify(reports));
+Example:
+
+```python
+with open("playlist.txt", "w") as file:
+    file.write(data)
 ```
 
 Benefits:
 
-* Reports persist after refresh
-* No backend server required
-* Lightweight implementation
+* Persistent storage
+* Playlist recovery
+* Data backup capability
 
 ---
 
-# 7. Marker Rendering
+# Core Classes and Functions
 
-Each report creates:
+# Song Class
 
-* A map marker
-* A report table entry
+Represents an individual song.
 
-Markers visually represent incidents on the map.
+## Responsibilities
 
-When clicked:
+* Store song metadata
+* Format song information
+* Support comparisons/searches
 
-* Incident details can be displayed
-* Images and comments can be viewed
+## Example Attributes
 
----
-
-# 8. Emergency Report Table
-
-The system dynamically updates the report table.
-
-Displayed information includes:
-
-| Column        | Description            |
-| ------------- | ---------------------- |
-| Location      | Incident location      |
-| Type          | Emergency type         |
-| Time Reported | Submission timestamp   |
-| Status        | OPEN or RESOLVED       |
-| Action        | Administrative actions |
-
----
-
-# 9. Admin Resolution System
-
-Administrators can mark incidents as resolved.
-
-Password protection uses:
-
-```javascript
-CryptoJS.MD5()
+```python
+self.title
+self.artist
+self.duration
 ```
 
-Example:
+---
 
-```javascript
-const adminPasswordHash = CryptoJS.MD5("remove").toString();
+# Playlist Class
+
+Manages playlist functionality.
+
+## Responsibilities
+
+* Add songs
+* Remove songs
+* Search songs
+* Display playlists
+* Save/load data
+
+---
+
+# add_song()
+
+```python
+add_song(song)
 ```
 
-The system compares:
-
-* Entered password hash
-* Stored admin password hash
-
-Once verified:
-
-* The incident status changes
-* The UI updates accordingly
+Adds a song object into the playlist.
 
 ---
 
-# Main Files Explained
+# remove_song()
 
-# index.html
-
-Main application interface.
-
-Contains:
-
-* Map container
-* Emergency reporting form
-* Reports table
-* Admin controls
-* Incident display panel
-
----
-
-# login.html
-
-Handles:
-
-* User authentication
-* Session initialization
-* Access control
-
----
-
-# script.js
-
-Core functionality file.
-
-Responsible for:
-
-* Map initialization
-* Form validation
-* Geocoding
-* Report storage
-* Marker rendering
-* Authentication logic
-* Incident status updates
-
----
-
-# style.css
-
-Defines:
-
-* Layout styling
-* Responsive UI
-* Form appearance
-* Table formatting
-* Map dimensions
-* Button styling
-
----
-
-# Key JavaScript Functionalities
-
-# Form Validation
-
-```javascript
-if (!name || !phone || !emergency || !location)
+```python
+remove_song(song_name)
 ```
 
-Ensures required information is entered.
+Deletes a song from the playlist.
 
 ---
 
-# Image Upload Handling
+# display_playlist()
 
-```javascript
-const reader = new FileReader();
+```python
+display_playlist()
 ```
 
-Converts uploaded images into Base64 format.
-
-Benefits:
-
-* Easy browser storage
-* Instant preview capability
-* No backend dependency
+Displays all songs currently in the playlist.
 
 ---
 
-# Dynamic Report Rendering
+# search_song()
 
-```javascript
-addMarkerAndRow(report)
+```python
+search_song(keyword)
 ```
 
-Adds:
-
-* Map marker
-* Table row
-* Interactive report entry
+Searches for matching songs.
 
 ---
 
-# Map Filtering
+# save_playlist()
 
-The application updates visible reports based on:
+```python
+save_playlist(filename)
+```
 
-* Zoom level
-* Map boundaries
+Stores playlist information to a file.
 
-Events used:
+---
 
-```javascript
-map.on("moveend")
-map.on("zoomend")
+# load_playlist()
+
+```python
+load_playlist(filename)
+```
+
+Loads existing playlist data.
+
+---
+
+# Example Workflow
+
+# Step 1
+
+Create songs.
+
+```python
+song1 = Song("Blinding Lights", "The Weeknd", "3:20")
+song2 = Song("Stay", "Justin Bieber", "2:45")
+```
+
+---
+
+# Step 2
+
+Create playlist.
+
+```python
+favorites = Playlist("Favorites")
+```
+
+---
+
+# Step 3
+
+Add songs.
+
+```python
+favorites.add_song(song1)
+favorites.add_song(song2)
+```
+
+---
+
+# Step 4
+
+Display playlist.
+
+```python
+favorites.display_playlist()
+```
+
+---
+
+# Step 5
+
+Search for a song.
+
+```python
+favorites.search_song("Stay")
+```
+
+---
+
+# Step 6
+
+Save playlist.
+
+```python
+favorites.save_playlist("favorites.txt")
 ```
 
 ---
 
 # Running the Project
 
-# 1. Download or Clone the Repository
+# 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
@@ -454,189 +413,219 @@ git clone <repository-url>
 
 ---
 
-# 2. Open the Project Folder
+# 2. Navigate into the Project Folder
 
 ```bash
-cd Emergency-Reporting-Service-main
+cd Playlist-Management-main
 ```
 
 ---
 
-# 3. Run the Application
+# 3. Run the Program
 
-Open:
+```bash
+python main.py
+```
+
+---
+
+# Example Console Interaction
 
 ```text
-login.html
-```
+===== Playlist Management System =====
+1. Create Playlist
+2. Add Song
+3. Remove Song
+4. Display Playlist
+5. Search Song
+6. Save Playlist
+7. Exit
 
-in a web browser.
-
-Recommended browsers:
-
-* Google Chrome
-* Microsoft Edge
-* Firefox
-
----
-
-# Example Workflow
-
-## Step 1
-
-Login to the system.
-
-## Step 2
-
-Fill out emergency details.
-
-## Step 3
-
-Provide:
-
-* Address
-  OR
-* Coordinates
-
-## Step 4
-
-Upload optional image evidence.
-
-## Step 5
-
-Submit the report.
-
-## Step 6
-
-View the incident marker on the map.
-
-## Step 7
-
-Administrators can resolve the incident.
-
----
-
-# Example Report Object
-
-```javascript
-{
-  name: "John Doe",
-  phone: "123-456-7890",
-  emergency: "Car Accident",
-  location: "Burnaby, BC",
-  lat: 49.2488,
-  lng: -122.9805,
-  comments: "Two vehicles involved",
-  status: "OPEN"
-}
+Enter your choice:
 ```
 
 ---
 
-# Security Considerations
+# Object-Oriented Programming Concepts Used
 
-Current security implementation includes:
+# Encapsulation
 
-* Session-based authentication
-* Password hashing using MD5
-* Admin-only resolution actions
+Data and functionality are grouped together inside classes.
 
-However, this project is primarily educational.
+Example:
 
-Current limitations:
-
-* No backend authentication
-* No encrypted database
-* LocalStorage vulnerability
-* MD5 is not recommended for production security
+```python
+class Song:
+```
 
 ---
 
-# Limitations
+# Abstraction
 
-This project is a frontend-only prototype.
+Complex playlist operations are hidden behind simple method calls.
 
-Limitations include:
+Example:
 
-* No backend server
-* No database integration
-* No real emergency dispatch integration
-* No live notifications
-* No GPS tracking
-* LocalStorage size limitations
-* No multi-user synchronization
+```python
+playlist.add_song(song)
+```
 
 ---
 
-# Future Improvements
+# Modularity
 
-Potential enhancements include:
+The project separates:
 
-* Firebase or MongoDB integration
-* Real-time emergency updates
-* SMS/email notifications
-* GPS live tracking
-* Role-based authentication
-* Secure backend API
-* Cloud image storage
-* Mobile application version
-* Heatmap visualization
-* Analytics dashboard
-* Emergency prioritization system
-* Integration with emergency responders
+* Song logic
+* Playlist logic
+* Utility functions
+* Main execution
+
+Improves:
+
+* Readability
+* Maintainability
+* Scalability
+
+---
+
+# Dynamic Data Handling
+
+Playlists dynamically grow and shrink based on operations.
+
+Implemented using:
+
+```python
+lists
+```
+
+---
+
+# Error Handling
+
+The system may include validation such as:
+
+```python
+try:
+    operation
+except:
+    handle_error
+```
+
+Used to:
+
+* Prevent crashes
+* Handle invalid input
+* Improve user experience
+
+---
+
+# Potential Future Improvements
+
+Future enhancements may include:
+
+* Graphical User Interface (GUI)
+* Music playback support
+* Database integration
+* User accounts and authentication
+* Playlist sharing
+* Recommendation engine
+* Sorting and filtering
+* Genre categorization
+* Audio file integration
+* Search optimization
+* Cloud synchronization
+* Web-based version
 
 ---
 
 # Educational Value
 
-This project demonstrates concepts in:
+This project is useful for learning:
 
-* Web development
-* Interactive maps
-* Geolocation systems
-* Client-side storage
-* JavaScript event handling
-* Authentication systems
-* Emergency management software
-* Frontend application architecture
+* Python programming
+* Object-oriented programming
+* Data structures
+* File handling
+* Software modularity
+* Console application design
+* CRUD operations
 
-Useful for:
+Suitable for:
 
-* Software engineering projects
-* Web development portfolios
-* GIS/map-based application learning
-* Emergency response system prototypes
-* Academic demonstrations
+* Beginner Python projects
+* OOP coursework
+* Portfolio demonstrations
+* Academic assignments
+* Data management practice
+
+---
+
+# Example Data Representation
+
+## Song Object
+
+```python
+{
+    "title": "Blinding Lights",
+    "artist": "The Weeknd",
+    "duration": "3:20"
+}
+```
+
+---
+
+# Example Playlist Representation
+
+```python
+{
+    "playlist_name": "Favorites",
+    "songs": [
+        "Blinding Lights",
+        "Stay"
+    ]
+}
+```
+
+---
+
+# Advantages of the System
+
+* Simple and lightweight
+* Easy to understand
+* Modular architecture
+* Expandable functionality
+* Beginner-friendly design
+* Demonstrates core programming concepts
+
+---
+
+# Limitations
+
+Current limitations may include:
+
+* No actual audio playback
+* No online streaming support
+* No database backend
+* Console-only interaction
+* Limited scalability
+* Local storage dependency
 
 ---
 
 # Dependencies
 
-## External Libraries
+## Python Version
 
 ```text
-Leaflet.js
-Leaflet Control Geocoder
-CryptoJS
-XLSX.js
+Python 3.x
 ```
-
----
-
-# Browser Support
-
-Supported on modern browsers:
-
-* Chrome
-* Firefox
-* Edge
-* Safari
 
 ---
 
 # Author
 
-Developed as a browser-based emergency reporting and incident tracking system.
+Developed as a playlist and music management application using Python and object-oriented programming concepts.
 
 ---
 
