@@ -1,88 +1,117 @@
 # Playlist Management System
 
-A Python-based music playlist management application that allows users to create, manage, organize, and interact with playlists and songs through object-oriented programming concepts.
+A C++ project that implements a custom dynamic string list data structure with support for insertion, deletion, searching, resizing, copying, comparison, and undo operations.
 
-This project demonstrates the implementation of custom data structures, playlist operations, song management, and file handling while simulating the core functionality of a music streaming platform.
+The project focuses on practicing core data structures and object-oriented programming concepts by building a custom list implementation from scratch without using STL containers like `vector`.
 
 ---
 
 # Project Overview
 
-The Playlist Management System is designed to provide users with a simplified music management experience.
+The Playlist Management System is built around a custom `StringList` class.
 
-Users can:
+Despite the project name, the implementation is not a full music streaming or audio playback application. Instead, it is a low-level string list management system that could be used as the foundation for playlist handling.
 
-* Create playlists
-* Add songs to playlists
-* Remove songs
-* Search for songs
-* Display playlist contents
-* Organize music collections
-* Manage playlist metadata
+The project demonstrates:
 
-The system emphasizes:
-
-* Object-oriented design
-* Data organization
-* Playlist manipulation
-* User interaction workflows
-* Music library management
+* Dynamic memory allocation
+* Deep copying
+* Operator overloading
+* Stack-based undo functionality
+* Dynamic array resizing
+* Custom list operations
+* Exception handling
 
 ---
 
 # Features
 
-## Playlist Management
+## String List Operations
 
-* Create new playlists
-* Rename playlists
-* Delete playlists
-* Display playlist information
+The system supports:
 
-## Song Management
+* Insert at front
+* Insert at back
+* Insert before an index
+* Remove elements
+* Replace elements
+* Clear the list
+* Search for strings
+* Check containment
+* Access by index
 
-* Add songs to playlists
-* Remove songs from playlists
-* Search for songs
-* View song details
-* Prevent duplicate handling
+---
 
-## Data Organization
+## Undo Functionality
 
-* Store songs efficiently
-* Maintain playlist order
-* Dynamic playlist updates
-* Structured data representation
+The project includes an internal stack-based undo system.
 
-## User Interaction
+Undoable operations include:
 
-* Console-based interaction
-* Menu-driven navigation
-* Input validation
-* Interactive operations
+* set()
+* insertBefore()
+* insertFront()
+* insertBack()
+* remove()
+* removeAll()
 
-## File Handling
+The undo system restores the list to its previous state.
 
-* Save playlist information
-* Load existing playlist data
-* Persistent music management
+---
+
+## Dynamic Resizing
+
+The list automatically increases capacity when full.
+
+This is handled through:
+
+```cpp
+checkCapacity()
+```
+
+The internal array size doubles when necessary.
+
+---
+
+## Deep Copy Support
+
+The project correctly implements:
+
+* Copy constructor
+* Assignment operator
+* Destructor
+
+This prevents shallow copy memory issues.
+
+---
+
+## Comparison Operations
+
+Lists can be compared using:
+
+```cpp
+operator==
+operator!=
+```
+
+Two lists are considered equal if:
+
+* They contain the same strings
+* In the same order
+
+Undo history is not considered during comparison.
 
 ---
 
 # Technologies Used
 
-## Programming Language
-
-* Python 3
-
-## Concepts and Techniques
-
-* Object-Oriented Programming (OOP)
-* Classes and Objects
-* Lists and Collections
-* File I/O Operations
+* C++
+* Dynamic Arrays
+* Object-Oriented Programming
+* Stack Data Structure
+* Operator Overloading
 * Exception Handling
-* Modular Programming
+* Manual Memory Management
 
 ---
 
@@ -91,541 +120,509 @@ The system emphasizes:
 ```text
 Playlist-Management-main/
 │
-├── main.py             # Main program execution file
-├── playlist.py         # Playlist management logic
-├── song.py             # Song class and related operations
-├── utils.py            # Utility/helper functions
-├── data/               # Playlist or song storage files
-├── README.md           # Project documentation
-└── assets/             # Optional supporting resources
+├── StringList.h          # StringList class declaration
+├── StringList.cpp        # StringList implementation
+└── StringListTest.cpp    # Test program for validating functionality
 ```
 
 ---
 
-# System Architecture
+# Core Class: StringList
 
-The project follows a modular object-oriented design.
+The entire project is centered around the `StringList` class.
 
-Core components include:
+The list internally stores:
 
-| Component         | Responsibility                  |
-| ----------------- | ------------------------------- |
-| Song Class        | Represents individual songs     |
-| Playlist Class    | Manages playlist operations     |
-| Main Program      | Handles user interaction        |
-| Utility Functions | Supports validation and helpers |
-
----
-
-# How the System Works
-
-# 1. Song Representation
-
-Each song is represented using a Song class.
-
-Typical attributes include:
-
-```python
-class Song:
-    def __init__(self, title, artist, duration):
-        self.title = title
-        self.artist = artist
-        self.duration = duration
+```cpp
+string* arr;
 ```
 
-A song object stores:
+along with:
 
-* Song title
-* Artist name
-* Duration
-* Metadata
-
----
-
-# 2. Playlist Creation
-
-Users can create playlists dynamically.
-
-Example:
-
-```python
-playlist = Playlist("Favorites")
+```cpp
+int n;
+int capacity;
 ```
 
-Each playlist maintains:
+Where:
 
-* Playlist name
-* Collection of songs
-* Playlist statistics
+* `n` = current number of elements
+* `capacity` = allocated array size
 
 ---
 
-# 3. Adding Songs
+# Constructor and Memory Management
 
-Songs can be added into playlists.
+## Default Constructor
 
-Example:
+Creates an empty list with capacity 10.
 
-```python
-playlist.add_song(song)
+```cpp
+StringList();
 ```
 
-The system:
-
-* Appends songs
-* Updates playlist contents
-* Validates song entries
-
 ---
 
-# 4. Removing Songs
+## Copy Constructor
 
-Users can remove songs from playlists.
+Creates a deep copy of another list.
 
-Example:
-
-```python
-playlist.remove_song(song_name)
+```cpp
+StringList(const StringList& other);
 ```
 
-The application searches the playlist and removes matching songs.
+---
+
+## Assignment Operator
+
+Copies one list into another.
+
+```cpp
+StringList& operator=(const StringList& other);
+```
 
 ---
 
-# 5. Displaying Playlists
+## Destructor
 
-The system can display all songs in a playlist.
+Frees dynamically allocated memory.
 
-Example Output:
+```cpp
+~StringList();
+```
+
+---
+
+# Accessor Functions
+
+## size()
+
+Returns the number of elements.
+
+```cpp
+int size() const;
+```
+
+---
+
+## empty()
+
+Checks if the list is empty.
+
+```cpp
+bool empty() const;
+```
+
+---
+
+## get()
+
+Returns the string at a given index.
+
+```cpp
+string get(int i) const;
+```
+
+---
+
+## index()
+
+Returns the first occurrence of a string.
+
+```cpp
+int index(string str) const;
+```
+
+Returns:
+
+* index if found
+* `-1` if not found
+
+---
+
+## contains()
+
+Checks whether a string exists in the list.
+
+```cpp
+bool contains(string str) const;
+```
+
+---
+
+# Mutator Functions
+
+## set()
+
+Replaces an element at a specific index.
+
+```cpp
+void set(int i, string str);
+```
+
+---
+
+## insertFront()
+
+Inserts a string at the beginning.
+
+```cpp
+void insertFront(string str);
+```
+
+---
+
+## insertBack()
+
+Inserts a string at the end.
+
+```cpp
+void insertBack(string str);
+```
+
+---
+
+## insertBefore()
+
+Inserts before a given position.
+
+```cpp
+void insertBefore(int pos, string str);
+```
+
+---
+
+## remove()
+
+Deletes an element at a specific index.
+
+```cpp
+void remove(int pos);
+```
+
+---
+
+## removeAll()
+
+Clears the list.
+
+```cpp
+void removeAll();
+```
+
+---
+
+## undo()
+
+Restores the previous list state.
+
+```cpp
+void undo();
+```
+
+The undo feature uses an internal stack.
+
+---
+
+# Internal Stack Class
+
+The project includes a nested `Stack` class.
+
+```cpp
+class Stack
+```
+
+The stack is used to store undo history.
+
+The stack supports:
+
+* push()
+* pop()
+* isEmpty()
+
+The stack dynamically resizes when full.
+
+---
+
+# Dynamic Capacity Handling
+
+The list automatically grows when capacity is reached.
+
+```cpp
+void checkCapacity();
+```
+
+The array size doubles:
 
 ```text
-Playlist: Favorites
--------------------
-1. Blinding Lights - The Weeknd
-2. Shape of You - Ed Sheeran
-3. Stay - Justin Bieber
+10 → 20 → 40 → 80
 ```
+
+This improves insertion efficiency.
 
 ---
 
-# 6. Song Searching
+# Bounds Checking
 
-Users can search for songs by:
+The project validates index access using:
 
-* Title
-* Artist
-* Keyword
-
-Example:
-
-```python
-playlist.search_song("Stay")
+```cpp
+checkBounds(int i, string s)
 ```
 
----
+If an invalid index is used:
 
-# 7. File Persistence
-
-Playlist data can be stored using file operations.
-
-Example:
-
-```python
-with open("playlist.txt", "w") as file:
-    file.write(data)
-```
-
-Benefits:
-
-* Persistent storage
-* Playlist recovery
-* Data backup capability
-
----
-
-# Core Classes and Functions
-
-# Song Class
-
-Represents an individual song.
-
-## Responsibilities
-
-* Store song metadata
-* Format song information
-* Support comparisons/searches
-
-## Example Attributes
-
-```python
-self.title
-self.artist
-self.duration
-```
-
----
-
-# Playlist Class
-
-Manages playlist functionality.
-
-## Responsibilities
-
-* Add songs
-* Remove songs
-* Search songs
-* Display playlists
-* Save/load data
-
----
-
-# add_song()
-
-```python
-add_song(song)
-```
-
-Adds a song object into the playlist.
-
----
-
-# remove_song()
-
-```python
-remove_song(song_name)
-```
-
-Deletes a song from the playlist.
-
----
-
-# display_playlist()
-
-```python
-display_playlist()
-```
-
-Displays all songs currently in the playlist.
-
----
-
-# search_song()
-
-```python
-search_song(keyword)
-```
-
-Searches for matching songs.
-
----
-
-# save_playlist()
-
-```python
-save_playlist(filename)
-```
-
-Stores playlist information to a file.
-
----
-
-# load_playlist()
-
-```python
-load_playlist(filename)
-```
-
-Loads existing playlist data.
+* An exception is thrown
+* Invalid memory access is prevented
 
 ---
 
 # Example Workflow
 
-# Step 1
+## Step 1
 
-Create songs.
+Create a list.
 
-```python
-song1 = Song("Blinding Lights", "The Weeknd", "3:20")
-song2 = Song("Stay", "Justin Bieber", "2:45")
+```cpp
+StringList list;
 ```
 
 ---
 
-# Step 2
+## Step 2
 
-Create playlist.
+Insert elements.
 
-```python
-favorites = Playlist("Favorites")
+```cpp
+list.insertBack("Song A");
+list.insertBack("Song B");
 ```
 
 ---
 
-# Step 3
+## Step 3
 
-Add songs.
+Display contents.
 
-```python
-favorites.add_song(song1)
-favorites.add_song(song2)
+```cpp
+list.print();
 ```
 
 ---
 
-# Step 4
+## Step 4
 
-Display playlist.
+Remove an item.
 
-```python
-favorites.display_playlist()
+```cpp
+list.remove(0);
 ```
 
 ---
 
-# Step 5
+## Step 5
 
-Search for a song.
+Undo the operation.
 
-```python
-favorites.search_song("Stay")
+```cpp
+list.undo();
 ```
+
+The removed item is restored.
 
 ---
 
-# Step 6
+# String Representation
 
-Save playlist.
+The project supports conversion to a formatted string.
 
-```python
-favorites.save_playlist("favorites.txt")
+```cpp
+string toString() const;
 ```
+
+Useful for:
+
+* Debugging
+* Printing
+* Testing
 
 ---
 
-# Running the Project
+# Testing File
 
-# 1. Clone the Repository
+## StringListTest.cpp
 
-```bash
-git clone <repository-url>
-```
+This file tests:
 
----
+* Insertions
+* Deletions
+* Equality operators
+* Copying
+* Undo operations
+* Capacity resizing
+* Bounds checking
 
-# 2. Navigate into the Project Folder
-
-```bash
-cd Playlist-Management-main
-```
-
----
-
-# 3. Run the Program
-
-```bash
-python main.py
-```
-
----
-
-# Example Console Interaction
-
-```text
-===== Playlist Management System =====
-1. Create Playlist
-2. Add Song
-3. Remove Song
-4. Display Playlist
-5. Search Song
-6. Save Playlist
-7. Exit
-
-Enter your choice:
-```
+It validates whether the list behaves correctly under different operations.
 
 ---
 
 # Object-Oriented Programming Concepts Used
 
-# Encapsulation
+## Encapsulation
 
-Data and functionality are grouped together inside classes.
+Data members are private and accessed through public methods.
 
-Example:
+---
 
-```python
-class Song:
+## Deep Copying
+
+The project demonstrates proper management of dynamically allocated memory.
+
+Avoids:
+
+* Memory leaks
+* Shared pointers between objects
+* Double deletion
+
+---
+
+## Operator Overloading
+
+The project overloads:
+
+```cpp
+operator=
+operator==
+operator!=
+```
+
+This improves usability and readability.
+
+---
+
+## Dynamic Memory Allocation
+
+The project manually manages memory using:
+
+```cpp
+new
+```
+
+and
+
+```cpp
+delete[]
 ```
 
 ---
 
-# Abstraction
+## Nested Classes
 
-Complex playlist operations are hidden behind simple method calls.
+The internal `Stack` class is nested inside `StringList`.
 
-Example:
+This keeps undo-related functionality encapsulated.
 
-```python
-playlist.add_song(song)
+---
+
+# How to Compile and Run
+
+## Compile
+
+Using g++:
+
+```bash
+g++ StringList.cpp StringListTest.cpp -o playlist_system
 ```
 
 ---
 
-# Modularity
+## Run
 
-The project separates:
+On Windows:
 
-* Song logic
-* Playlist logic
-* Utility functions
-* Main execution
+```bash
+playlist_system.exe
+```
 
-Improves:
+On macOS/Linux:
 
-* Readability
-* Maintainability
-* Scalability
-
----
-
-# Dynamic Data Handling
-
-Playlists dynamically grow and shrink based on operations.
-
-Implemented using:
-
-```python
-lists
+```bash
+./playlist_system
 ```
 
 ---
 
-# Error Handling
+# Example Output
 
-The system may include validation such as:
+```text
+[Song A, Song B, Song C]
 
-```python
-try:
-    operation
-except:
-    handle_error
+Removing index 1...
+
+[Song A, Song C]
+
+Undoing operation...
+
+[Song A, Song B, Song C]
 ```
-
-Used to:
-
-* Prevent crashes
-* Handle invalid input
-* Improve user experience
-
----
-
-# Potential Future Improvements
-
-Future enhancements may include:
-
-* Graphical User Interface (GUI)
-* Music playback support
-* Database integration
-* User accounts and authentication
-* Playlist sharing
-* Recommendation engine
-* Sorting and filtering
-* Genre categorization
-* Audio file integration
-* Search optimization
-* Cloud synchronization
-* Web-based version
-
----
-
-# Educational Value
-
-This project is useful for learning:
-
-* Python programming
-* Object-oriented programming
-* Data structures
-* File handling
-* Software modularity
-* Console application design
-* CRUD operations
-
-Suitable for:
-
-* Beginner Python projects
-* OOP coursework
-* Portfolio demonstrations
-* Academic assignments
-* Data management practice
-
----
-
-# Example Data Representation
-
-## Song Object
-
-```python
-{
-    "title": "Blinding Lights",
-    "artist": "The Weeknd",
-    "duration": "3:20"
-}
-```
-
----
-
-# Example Playlist Representation
-
-```python
-{
-    "playlist_name": "Favorites",
-    "songs": [
-        "Blinding Lights",
-        "Stay"
-    ]
-}
-```
-
----
-
-# Advantages of the System
-
-* Simple and lightweight
-* Easy to understand
-* Modular architecture
-* Expandable functionality
-* Beginner-friendly design
-* Demonstrates core programming concepts
 
 ---
 
 # Limitations
 
-Current limitations may include:
+Current limitations include:
 
 * No actual audio playback
-* No online streaming support
-* No database backend
-* Console-only interaction
-* Limited scalability
-* Local storage dependency
+* No graphical interface
+* No file saving/loading
+* No STL containers used
+* Undo history stored only during runtime
+* No playlist metadata
 
 ---
 
-# Dependencies
+# Possible Future Improvements
 
-## Python Version
+Potential enhancements include:
 
-```text
-Python 3.x
-```
+* File persistence
+* Playlist metadata support
+* Real music playlist integration
+* GUI implementation
+* Redo functionality
+* Sorting and filtering
+* Template-based generic list support
+* Iterator support
+* Linked-list implementation alternative
+* Unit testing framework integration
+
+---
+
+# Educational Value
+
+This project is valuable for learning:
+
+* Dynamic arrays
+* Manual memory management
+* Copy constructors
+* Assignment operators
+* Stack data structures
+* Undo systems
+* Exception handling
+* Object-oriented programming in C++
+
+It is suitable for:
+
+* Data structures coursework
+* OOP assignments
+* Intermediate C++ practice
+* Dynamic memory management exercises
 
 ---
 
 # Author
 
-Developed as a playlist and music management application using Python and object-oriented programming concepts.
+Developed as a custom C++ string list and undoable data structure project.
 
 ---
 
